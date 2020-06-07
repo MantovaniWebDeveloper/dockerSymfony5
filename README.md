@@ -3,7 +3,7 @@ docker compose for symfony 5
 
 # come usare questo docker compose
 
-- avviare la procedura cone docker-compose up
+- avviare la procedura con docker-compose up
 - sulla porta 8000 potrete vedere symfony5 in esecuzione
 - per settare il database mysql per symfony5 fare cosi:
   andare dentro al file .env
