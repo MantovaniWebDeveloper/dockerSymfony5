@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+    php: 
+        image: webdevops/php-apache:7.3-alpine
+        ports: 
+            - "8081:80"
+        #questo volumes fa riferimento al volume del mio pc
+        volumes: 
+            #./www è la cartella nel mio host invece :/app è la 
+            # cartella all'interno del contenitore php
+            - ./www:/app
+        networks:
+            - my-network
+        depends_on: 
+            - mysql
+    symfony:
+        image: 'bitnami/symfony:1'
+        ports: 
+            - "8000:8000"
+        volumes: 
+            #./www è la cartella nel mio host invece :/app è la 
+            # cartella all'interno del contenitore php
+            - ./www:/app
+        networks:
+            - my-network
+        depends_on: 
+            - mysql
+    mysql:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports:
+            - "3306:3306"
+        networks:
+            - my-network
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: dockerprova
+    
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        networks:
+            - my-network
+        environment:
+            PMA_HOST: mysql
+        ports:
+            - "8088:80"
+        depends_on: 
+            - mysql
+        
+
+networks:
+    my-network:
+
+#questo volumes fa riferimento al volumi del container alla cartella www
+volumes:
+    www:
